@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Añadiendo elementos</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+<div>
+<form>
+  <h2>Escribe el texto para complementar al elemento:</h2>
+  <input type="text" id="texto"/>
+  <h2>Selecciona un elemento a añadir</h2>
+  <select name="tipoElemento" id="tipoElemento">
+    <option value="undefined" selected="selected"></option>
+    <option value="p">Párrafo</option>
+    <option value="div">DIV</option>
+    <option value="h1" >H1</option>
+    <option value="h2">H2</option>
+    <option value="h3">H3</option>
+    <option value="h4">H4</option>
+  </select>
+  <br><br>
+  <button id="aniadir" type="button">Click para añadir</button> 
+  <br><br>
+  <button id="borrar" type="button">Borrar todos los elementos del select</button>
+  <br><br>
+  <button id="reemplazar" type="button">Reemplazar todos los elementos del select por H2 con un HOLA</button> 
+  <br><br>
+  <button id="clonar" type="button">Clonar todo el contenido de la página del select</button> 
+  
+</form>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var seleccionado;
+    var texto;
+    // Añadimos una clase al primer div de la página
+    $("div").eq(0).addClass("div_principal");
+
+    // La variable seleccionado, la igualamos al elemento que elijamos del select
+    $("select#tipoElemento").change(function(){
+      seleccionado = $(this).children("option:selected").val();
+    });
+
+    $("button#borrar").click(function(){
+      seleccionado = $("select#tipoElemento").children("option:selected").val();
+      console.log(seleccionado);
+      // Eliminamos todos los elementos que hemos marcado en el select (Y que habían sido añadidos anteriormente)
+      $(seleccionado+'#nuevo').remove();
+      alert("Borrado todos los: "+seleccionado);
+    });
+
+    $("button#reemplazar").click(function(){
+      seleccionado = $("select#tipoElemento").children("option:selected").val();
+      console.log(seleccionado);
+      // Reemplazamos todos los elementos que hemos marcado en el select por un h2
+      $("<h2 id='nuevo'>HOLA<h2>").replaceAll(seleccionado+'#nuevo');
+      alert("Reemplazado todos los: "+seleccionado);
+    });
+
+    $("button#clonar").click(function(){
+      seleccionado = $("select#tipoElemento").children("option:selected").val();
+      console.log(seleccionado+'#nuevo');
+      // Clonamos todos los elementos seleccionados en el select con la id 'nuevo'
+      $(seleccionado+'#nuevo').clone(false).appendTo("form");
+      alert("Clonado todos los: "+seleccionado+'#nuevo');
+    });
+
+    $("button#aniadir").click(function(){
+      texto = $("#texto").val();
+      console.log("HA AÑADIR: "+seleccionado);
+      console.log("TEXTO: "+texto)
+
+      // Dependiendo de la opción elegida en el select, vamos a añadir un tipo de elemento u otro a nuestra página
+      // Añadimos cada uno de estos nuevos elementos justo después del último botón en nuestra página
+      switch ($("select#tipoElemento").val()) { 
+        case 'undefined': 
+        alert("No ha seleccionado ninguna opción.");
+          break;
+        case 'p': 
+          $("<p id='nuevo'>"+texto+"</p>").insertAfter("button#clonar");
+          break;
+        case 'div': 
+          $("<div id='nuevo'>"+texto+"</div>").insertAfter("button#clonar");
+          break;		
+        case 'h1': 
+          $("<h1 id='nuevo'>"+texto+"</h1>").insertAfter("button#clonar");
+          break;
+        case 'h2': 
+          $("<h2 id='nuevo'>"+texto+"</h2>").insertAfter("button#clonar");
+          break;
+        case 'h3': 
+          $("<h3 id='nuevo'>"+texto+"</h3>").insertAfter("button#clonar");
+          break;
+        case 'h4': 
+          $("<h4 id='nuevo'>"+texto+"</h4>").insertAfter("button#clonar");
+          break;
+        default:
+          alert('Error');
+      }
+    });
+  });
+</script>
+
+<style>
+  .div_principal{
+    width: 80%;
+    margin:auto;
+  }
+
+  fieldset {
+    border: 0;
+  }
+  label {
+    display: block;
+    margin: 30px 0 0 0;
+  }
+  .overflow {
+    height: 200px;
+  }
+
+  .div_principal{
+    background-color: #fafafa;
+    margin: 1rem;
+    padding: 1rem;
+    border: 2px solid #ccc;
+    text-align: center;
+  }
+
+  button{
+    font-family: 'Raleway', sans-serif;
+  }
+  
+  body{
+    width: 800px;
+    height: 800px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -400px;
+    margin-left: -400px; 
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(201, 231, 241);
+  }
+
+</style>
+</body>
+</html>

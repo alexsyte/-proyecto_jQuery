@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Validar Formulario Básico</title>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet"> 
+</head>
+
+<body>
+    <div class="div_principal">
+        <h2>¡Bienvenido! Por favor ingrese su usuario antes de proceder.</h2>
+        <br>
+        <form name="formulario" id="f">
+            <label> Nombre:
+                <input type="text" name="nombre" placeholder="Usuario" size="50"/>
+            </label><br><br>
+            <label> Email:
+                <input type="text" name="email" placeholder="usuario@gmail.com" size="53"/>
+            </label><br><br>
+            <input type="submit" name="enviar" value="Enviar" />
+        </form>
+    </div>
+
+    <script>
+        // En esta variable guardamos el resultado de la validación de cada elemento de nuestro formulario
+        var check = [false, false];
+
+        // Mostramos el error al bloque donde ha ocurrido ese error, insertando un span
+        function mostrarError(elemento) {
+            var formato = elemento.attr('placeholder');
+            elemento.parent().append('<span>' + formato + '</span>');
+        }
+
+        function validar(patron, elemento) {
+            // Al validarlo, eliminamos los span que habíamos creado anteriormente.
+            elemento.parent().find('span').remove();
+
+            // Comprueba si cumple el patrón y el elemento que le pasamos, ejemplo: Patrón de DNI, elemento donde hemos escrito un DNI.
+            if (patron.test(elemento.val())) {
+                elemento.css('background-color', 'green');
+                return true;
+            } else {
+                elemento.css('background-color', 'red');
+                mostrarError(elemento);
+                return false;
+            }
+        }
+
+        // Comprobamos que el array de check esté lleno de true, significando que se ha validado nuestro formulario.
+        function enviarFormulario() {
+            for (x of check) {
+                if (x == false) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        
+        window.onload = function() {
+            // Elimina acción de submit si el formulario no valida
+            $('input[type="submit"]').on('click', function(e) {
+                var formValido = enviarFormulario();
+                if (formValido) {
+                    alert('¡Correcto!');
+                    window.open('introduccion.html');
+                } else {
+                    alert('Error al validar, corrige el/los campos');
+                    e.preventDefault();
+                }
+            });
+
+            // Cuando quitamos el foco en el input que hemos rellenado, verificamos si se cumple o no la validación.
+            $('input[type="text"]').focusout(function() {
+                switch($(this).attr('name')) {
+                    case 'nombre':
+                        check[0] = validar(new RegExp('^[A-Z]{1}[a-z]{6}$','g'), $(this));
+                        break;
+                    case 'email':
+                        check[1] = validar(new RegExp('^[a-z]+[@]{1}[a-z]+[\.]{1}[a-z]{2,3}$','g'), $(this));
+                        break;
+                }
+            });
+        }
+    </script>
+
+    <style>
+        label {
+            display: block;
+        }
+
+        span {
+            color: red;
+        }
+
+        .div_principal{
+            background-color: #fafafa;
+            margin: 1rem;
+            padding: 1rem;
+            border: 2px solid #ccc;
+            text-align: center;
+        }
+
+        body{
+            width: 500px;
+            height: 500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -250px;
+            margin-left: -250px; 
+            font-family: 'Raleway', sans-serif;
+            background-color: rgb(201, 231, 241);
+        }
+    </style>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Página principal</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet"> 
+</head>
+
+<body>
+
+<div>
+
+<img alt="imagen-principal"/>
+
+<h3>Pasa el ratón por encima de esa imagen ^</h3>
+
+<br>
+
+<ul id="menu">
+  <li><div>Otras páginas</div>
+    <ul>
+      <li><div id="pag1">Página personalizada</div></li>
+      <li><div id="pag2">Página con animaciones</div></li>
+    </ul>
+  </li>
+  <li class="ui-state-disabled"><div>Otras opciones</div></li>
+</ul>
+
+<br>
+
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Ésta página</a></li>
+    <li><a href="#tabs-2">Página personalizada</a></li>
+    <li><a href="#tabs-3">Página con animaciones</a></li>
+  </ul>
+  <div id="tabs-1">
+    <p>En ésta primera página (la cual estamos situados actualmente) es utilizada para mostrar algunos elementos de jQuery UI (menu / tabs), los cuales dotarán de vida a nuestra página HTML.</p>
+    <p>Por otro lado, como puedes observar, disponemos de una imagen al comienzo del HTML para dar ejemplo de AJAX, una manera muy fácil de traernos todo tipo de información de objetos jSON.</p>
+    <p>Hemos añadido algunos eventos, como un .mouseenter para la imagen, y .click para redirigirnos a alguna de las otras 2 páginas desde nuestro menú.</p>
+    <p>Hemos añadido un color picker, el cual tiene asignado una función para que cada vez que eligamos un nuevo color, cambie el color del fondo del panel de información situado al final de la página.</p>
+    <p>En la parte inferior de la pantalla, gracias a los métodos que nos ofrece jQuery, podemos hacer una ventana de información para mostrar u ocultar (en mi caso) la autora de la página.</p>
+    <p>A la hora de escribir el código, hemos utilizado selectores de jQuery, clases (ya escritas o añadiendole una nueva clase dentro del método script), y CSS para la parte visual de la página.</p>    
+  </div>
+  <div id="tabs-2">
+    <p>A través de una lista, el usuario puede elegir que elemento añadir a su página HTML, un aspecto que no habíamos tratado hasta ahora, como es la insercción de elementos en nuestro DOM.</p>
+    <p>A su vez, podemos borrar todos los elementos que habíamos añadidos anteriormente del tipo que hemos seleccionado en el select.</p>
+    <p>Otra opción que hemos implementado es el reemplazar todos los elementos seleccionados en el selector por otro elemento ya establecido con anterioridad.</p>
+    <p>Por último, podemos clonar todo el contenido que tengamos seleccionado en el selector.</p>
+    <p>A la hora de escribir el código, hemos utilizado selectores de jQuery, clases (ya escritas o añadiendole una nueva clase dentro del método script), y CSS para la parte visual de la página.</p>  
+  </div>
+  <div id="tabs-3">
+    <p>En esta última parte vamos a ver otra gran característica de jQuery como son las animaciones, tanto para mostrar / ocultar contenido, como para animar distintos objetos de nuestra página web.</p>
+    <p>Ésto le dará mucha vida a nuestra página, aunque no es recomendable añadir muchas animaciones en nuestra página web ya que el usuario puede distraerse y / o salirse.</p>
+    <p>También hemos visto como mover un elemento por nuestra página, como ampliar o disminuir su tamaño a través de movimientos con nuestro ratón.</p>
+    <p>A la hora de escribir el código, hemos utilizado selectores de jQuery, clases (ya escritas o añadiendole una nueva clase dentro del método script), y CSS para la parte visual de la página.</p>  
+  </div>
+</div>
+
+<br>
+
+<h4>¡El color que selecciones cambia el color del panel abajo!</h4>
+<div id="red"></div>
+<div id="green"></div>
+<div id="blue"></div>
+<br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+<br>
+<div id="flip">Click para mostrar más información</div>
+<div id="panel">Esta página ha sido creada por Alexandra Carolina Collinge González, del curso 2ºDAM como práctica del curso de jQuery.</div>
+</div>
+
+<script>
+  var numero=1;
+    $( function() {
+      // Gracias a jQuery ui, tenemos métodos propios como menu o tabs
+      $("#menu").menu();
+      $( "#tabs" ).tabs();
+
+      // Añadimos clases a dos elementos de nuestro DOM
+      $("img").eq(0).addClass("imagen_principal");
+      $("div").eq(0).addClass("div_principal");
+
+      // Nos traemos una imagen de un repositorio y la mostramos en pantalla
+      $.ajax("https://jsonplaceholder.typicode.com/photos?id="+numero, {
+          dataType: 'json',
+          success: function (data) {
+            data.forEach(function (valor) {
+              var foto=valor.thumbnailUrl+".png";
+              // Añadimos la propiedad src a la imagen de nuestra página
+              $("img").prop("src",foto);
+              
+            });
+          },
+          // Mensaje de error por si el repositorio no funcionara
+          error: function (jqXHR, texStatus, error) {
+              alert("Error:" + texStatus + " " + error);
+          }
+      });
+
+      // Método click
+      $("#pag1").click(function() {
+        window.open("dom.html");
+      });
+
+      // Método click
+      $("#pag2").click(function() {
+        window.open("animacion.html");
+      });
+
+      // Método que se ejecuta cuando el usuario pasa el ratón por encima de un elemento (en este caso la imagen)
+      $("img").eq(0).mouseenter(function(event){
+        alert("Has pasado por una imagen traída desde un repositorio.");
+      });
+
+      // Método click que va mostrando y ocultando el panel gracias al método slideToggle (si está lo oculta, y si está oculto lo muestra)
+      $("#flip").click(function(){
+        $("#panel").slideToggle("slow");
+      });
+
+      // Este código es para poder cambiar el color del panel dependiendo del color que eligamos en la barra
+      // R, G, B corresponde a los 3 valores que vamos a recibir en total, 1 valor por cada barra
+      function hexFromRGB(r, g, b) {
+      var hex = [
+        r.toString( 16 ),
+        g.toString( 16 ),
+        b.toString( 16 )
+      ];
+      $.each( hex, function( nr, val ) {
+        if ( val.length === 1 ) {
+          hex[ nr ] = "0" + val;
+        }
+      });
+      return hex.join( "" ).toUpperCase();
+      }
+      function refreshSwatch() {
+        // Cogemos los valores, y los pasamos a un código hexadecimal con el método hexFromRGB
+        var red = $( "#red" ).slider( "value" ),
+          green = $( "#green" ).slider( "value" ),
+          blue = $( "#blue" ).slider( "value" ),
+          hex = hexFromRGB( red, green, blue );
+
+        // Asignamos el color que hemos recibido al flip y al panel de nuestra página con el método css
+        $("#flip").css( "background-color", "#" + hex );
+        $("#panel").css( "background-color", "#" + hex );
+      }
+  
+      // Con este código asignamos un valor por defecto al cargar nuestra página para las 3 barras
+      $( "#red, #green, #blue" ).slider({
+        orientation: "horizontal",
+        range: "min",
+        max: 255,
+        value: 127,
+        slide: refreshSwatch,
+        change: refreshSwatch
+      });
+      $( "#red" ).slider( "value", 255 );
+      $( "#green" ).slider( "value", 140 );
+      $( "#blue" ).slider( "value", 60 );
+
+    });
+
+</script>
+<style>
+    .ui-menu { 
+      width: 150px; 
+    }
+
+    .imagen_principal{
+      display:block;
+      margin:auto;
+    }
+
+    .div_principal{
+      width: 80%;
+      background-color: #fafafa;
+      margin: 1rem;
+      padding: 1rem;
+      border: 2px solid #ccc;
+      margin:auto;
+    }
+
+    #panel, #flip {
+      padding: 5px;
+      text-align: center;
+      background-color: #ffffff;
+      border: solid 1px #c3c3c3;
+    }
+
+    #panel {
+      padding: 50px;
+      display: none;
+    }
+
+    div h3{
+      text-align:center;
+    }
+
+    #red, #green, #blue {
+      float: left;
+      clear: left;
+      width: 300px;
+      margin: 15px;
+    }
+
+    #swatch {
+      width: 120px;
+      height: 100px;
+      margin-top: 18px;
+      margin-left: 350px;
+      background-image: none;
+    }
+
+    body{
+      font-family: 'Raleway', sans-serif;
+      background-color: rgb(201, 231, 241);
+    }
+
+    p{
+      font-family: 'Raleway', sans-serif;
+    }
+    #red .ui-slider-range { background: #ef2929; }
+    #red .ui-slider-handle { border-color: #ef2929; }
+    #green .ui-slider-range { background: #8ae234; }
+    #green .ui-slider-handle { border-color: #8ae234; }
+    #blue .ui-slider-range { background: #729fcf; }
+    #blue .ui-slider-handle { border-color: #729fcf; }
+</style>
+</body>
+</html>
+
+
+<!--
+    Toda la teoría referente al tema se encuentra en el pdf tutorial.
+-->

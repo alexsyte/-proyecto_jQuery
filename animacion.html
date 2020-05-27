@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Animaciones</title>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200&display=swap" rel="stylesheet"> 
+</head>
+<body>
+
+<div class="div_principal">
+
+<h2>En esta página vamos a ver distintos tipos de animaciones gracias a jQuery.</h2>
+
+<button id="boton-mostrar">¡Haz click para mostrar!</button>
+<button id="boton-ocultar">¡Haz click para ocultar!</button>
+<button id="boton-alternar">¡Haz click para alternar entre mostrar / ocultar!</button>
+<br><br>
+
+<button id="boton-mostrar2">¡Haz click para mostrar lentamente!</button>
+<button id="boton-ocultar2">¡Haz click para ocultar lentamente!</button>
+<button id="boton-alternar2">¡Haz click para alternar entre mostrar / ocultar lentamente!</button>
+<p id="parrafo">Haz click en los botones para ver qué sucede.</p>
+<br><br>
+
+<button id="cuadrado">Click para ver una animación en el cuadrado.</button>
+<br><br>
+<div id="mover" style="background:#21bf9d; height:100px; width:100px; position:absolute;"></div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+<button id="cuadrado2">Click para ver una animación en el cuadrado.</button>
+<br><br>
+<div id="ampliar" style="width: 100px; height: 100px; background: #d5de7e; border-style: solid; border-color: #c0ce40;"></div>
+
+<br><br>
+<p>Vamos a ver a continuación un elemento que se puede mover libremente por nuestra página, simplemente arrastrándolo.</p>
+<div id="draggable" class="ui-widget-content">
+  <p>Muéveme por la página</p>
+</div>
+<br><br>
+
+<!-- Esta animación no funciona adecuadamente al subirlo a un servidor hosting
+<p>A continuación vamos a ver un elemento al cual podemos aumentarle o disminuirle el tamaño, con una animación.</p>
+<div id="resizable" class="ui-widget-content">
+  <h3 class="ui-widget-header">¡Amplíame!</h3>
+</div>
+</div>-->
+
+<script>
+  $(function() {  // Creando variables, vemos otra manera de asignar esas variables a las id ya asignadas en el HTML
+    var botonMostrar = $("#boton-mostrar"),
+        botonOcultar = $("#boton-ocultar"),
+        botonAlternar = $("#boton-alternar"),
+        botonMostrar2 = $("#boton-mostrar2"),
+        botonOcultar2 = $("#boton-ocultar2"),
+        botonAlternar2 = $("#boton-alternar2"),
+        parrafo = $("#parrafo");
+    
+    botonMostrar.on("click", function() {
+      parrafo.show();
+    });
+
+    botonOcultar.on("click", function() {
+      parrafo.hide();
+    }); 
+
+    botonAlternar.on("click", function() {
+      parrafo.toggle();
+    });
+
+    botonMostrar2.on("click", function() {
+      parrafo.show("slow"); /**Podemos utilizar también .fadeIn()**/
+    });
+    
+    botonOcultar2.on("click", function() {
+      parrafo.hide(2000); /**Podemos utilizar también .fadeOut()**/
+    }); 
+
+    botonAlternar2.on("click", function() {
+      parrafo.toggle(2000);
+    });
+
+    $("#cuadrado").click(function(){
+      var div = $("div#mover");
+      div.animate({height: '300px', opacity: '0.4'}, "slow");
+      div.animate({width: '300px', opacity: '0.8'}, "slow");
+      div.animate({height: '100px', opacity: '0.4'}, "slow");
+      div.animate({width: '100px', opacity: '0.8'}, "slow");
+    });
+
+    $("#cuadrado2").click(function(){
+        $("#ampliar").animate({
+            width: "300px",
+            height: "300px",
+            marginLeft: "150px",
+            borderWidth: "10px",
+            opacity: 0.5
+        });
+    });
+
+    $("#draggable").draggable();
+
+    $( "#resizable" ).resizable({
+      animate: true
+    });
+  });
+</script>
+
+<style>
+  .div_principal{
+    width: 80%;
+    background-color: #fafafa;
+    margin: 1rem;
+    padding: 1rem;
+    border: 2px solid #ccc;
+    margin:auto;
+  }
+  
+  #draggable { 
+    width: 150px; 
+    height: 150px; 
+    padding: 0.5em; 
+    background-color: lightcoral;
+  }
+
+  #resizable { 
+    width: 150px; 
+    height: 150px; 
+    padding: 0.5em; 
+  }
+
+  #resizable h3 { 
+    text-align: center; 
+    margin: 0; 
+  }
+
+  .ui-resizable-helper { 
+    border: 1px dotted gray; 
+  }
+
+  button{
+    font-family: 'Raleway', sans-serif;
+  }
+
+  body{
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(201, 231, 241);
+  }
+</style>
+
+</body>
+</html>
